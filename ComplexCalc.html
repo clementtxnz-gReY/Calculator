@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: black;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .board {
+        border: 5px solid rgb(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 10px;
+      }
+      .display {
+        border: 3px solid rgb(255, 255, 255, 0.2);
+        border-radius: 5px;
+        height: 80px;
+        margin-bottom: 5px;
+        background: rgb(58, 56, 56);
+        color: greenyellow;
+        position: relative;
+
+        .output {
+          font-size: 20px;
+          position: absolute;
+        }
+        .operand1 {
+          left: 10px;
+          top: 0;
+        }
+        .operator {
+          left: 10px;
+          top: 20px;
+        }
+        .operand2 {
+          left: 10px;
+          top: 40px;
+        }
+        .result {
+          right: 10px;
+          bottom: 0;
+        }
+      }
+      .table {
+        display: grid;
+        gap: 2px;
+        grid-template-columns: repeat(4, 80px);
+        grid-template-rows: repeat(4, 60px);
+      }
+      .simpCalcBoard {
+        font-size: 20px;
+
+        .simpCalcSect1 {
+          margin-bottom: 5px;
+          input {
+            height: 30px;
+            box-shadow: 0 0 10px black inset;
+            border: none;
+            outline: none;
+            background: white;
+            font-size: inherit;
+            text-align: center;
+            @media (max-width: 559px) {
+              display: block;
+            }
+          }
+          select {
+            background: #f0f0f0;
+            font-size: inherit;
+            @media (max-width: 559px) {
+              margin-left: 45%;
+            }
+          }
+        }
+        .simpCalcSect2 {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          text-align: center;
+
+          p {
+            background: rgb(58, 56, 56);
+            border: 2px solid rgb(255, 255, 255, 0.2);
+            color: yellowgreen;
+          }
+          .submit {
+            font-size: inherit;
+          }
+        }
+      }
+      .clear {
+        height: 40px;
+        margin-top: 5px;
+        button {
+          font-size: 20px;
+          color: red;
+          height: 100%;
+          display: block;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="board simpCalcBoard">
+      <section class="simpCalcSect1">
+        <input type="text" class="input1" />
+        <select>
+          <option>+</option>
+          <option>-</option>
+          <option>*</option>
+          <option>/</option>
+          <option>^</option>
+          <option>%</option>
+          <option>◻</option>
+        </select>
+        <input type="text" class="input2" />
+      </section>
+      <section class="simpCalcSect2">
+        <p class="simpCalcResult">0</p>
+        <button class="submit">=</button>
+      </section>
+    </div>
+
+    <div class="board">
+      <section class="display">
+        <span class="output operand1"></span>
+        <span class="output operator"></span>
+        <span class="output operand2"></span>
+        <p class="output result"></p>
+      </section>
+
+      <section class="table">
+        <button class="input div">/</button>
+        <button class="input mul">*</button>
+        <button class="input add">+</button>
+        <button class="input sub">-</button>
+        <button class="input sqr">^</button>
+        <button class="input num0">0</button>
+        <button class="input num1">1</button>
+        <button class="input num2">2</button>
+        <button class="input num3">3</button>
+        <button class="input num4">4</button>
+        <button class="input num5">5</button>
+        <button class="input num6">6</button>
+        <button class="input num7">7</button>
+        <button class="input num8">8</button>
+        <button class="input num9">9</button>
+        <button class="input eql">=</button>
+      </section>
+
+      <section class="clear">
+        <button class="clearDisplay">C</button>
+      </section>
+    </div>
+
+    <script>
+      const submit = document.querySelector(".submit");
+      submit.addEventListener("click", () => {
+        const simpCalcResult = document.querySelector(".simpCalcResult");
+        const simpCalcValue1 = document.querySelector(".input1");
+        const simpCalcValue2 = document.querySelector(".input2");
+        const num1 = parseFloat(simpCalcValue1.value);
+        const num2 = parseFloat(simpCalcValue2.value);
+
+        const simpCalcOperator = document.querySelector("select").value;
+        let sum;
+        if (simpCalcOperator === "+") {
+          sum = num1 + num2;
+        } else if (simpCalcOperator === "-") {
+          sum = num1 - num2;
+        } else if (simpCalcOperator === "/") {
+          sum = num1 / num2;
+        } else if (simpCalcOperator === "*") {
+          sum = num1 * num2;
+        } else if (simpCalcOperator === "◻") {
+          sum = num1 * num1;
+        } else if (simpCalcOperator === "%") {
+          sum = (num2 / 100) * num1;
+        } else if (simpCalcOperator === "^") {
+          sum = num1 ** num2;
+        }
+
+        if (simpCalcOperator === "◻") {
+          simpCalcResult.innerText = sum;
+        } else if (isNaN(num1) || isNaN(num2)) {
+          simpCalcResult.innerText = "Enter a number";
+        } else {
+          simpCalcResult.innerText = sum;
+        }
+      });
+
+      //Display Elements
+      const operand1 = document.querySelector(".operand1");
+      const operator = document.querySelector(".operator");
+      const operand2 = document.querySelector(".operand2");
+      const result = document.querySelector(".result");
+
+      //Input Elements
+      const div = document.querySelector(".div");
+      const mul = document.querySelector(".mul");
+      const add = document.querySelector(".add");
+      const sub = document.querySelector(".sub");
+      const sqr = document.querySelector(".sqr");
+      const num0 = document.querySelector(".num0");
+      const num1 = document.querySelector(".num1");
+      const num2 = document.querySelector(".num2");
+      const num3 = document.querySelector(".num3");
+      const num4 = document.querySelector(".num4");
+      const num5 = document.querySelector(".num5");
+      const num6 = document.querySelector(".num6");
+      const num7 = document.querySelector(".num7");
+      const num8 = document.querySelector(".num8");
+      const num9 = document.querySelector(".num9");
+      const eql = document.querySelector(".eql");
+
+      div.addEventListener("click", () => {
+        operator.innerText = div.innerText;
+      });
+      mul.addEventListener("click", () => {
+        operator.innerText = mul.innerText;
+      });
+      add.addEventListener("click", () => {
+        operator.innerText = add.innerText;
+      });
+      sub.addEventListener("click", () => {
+        operator.innerText = sub.innerText;
+      });
+      sqr.addEventListener("click", () => {
+        operator.innerText = sqr.innerText;
+      });
+
+      num0.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num0.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num0.innerText;
+        }
+      });
+      num1.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num1.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num1.innerText;
+        }
+      });
+      num2.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num2.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num2.innerText;
+        }
+      });
+      num3.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num3.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num3.innerText;
+        }
+      });
+      num4.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num4.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num4.innerText;
+        }
+      });
+      num5.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num5.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num5.innerText;
+        }
+      });
+      num6.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num6.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num6.innerText;
+        }
+      });
+      num6.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num6.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num6.innerText;
+        }
+      });
+      num6.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num6.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num6.innerText;
+        }
+      });
+      num7.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num7.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num7.innerText;
+        }
+      });
+      num8.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num8.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num8.innerText;
+        }
+      });
+      num9.addEventListener("click", () => {
+        if (operator.innerText === "") {
+          operand1.innerText = num9.innerText;
+        } else if (operator.innerText === "/" || "+" || "-" || "*" || "^") {
+          operand2.innerText = num9.innerText;
+        }
+      });
+
+      eql.addEventListener("click", () => {
+        const value1 = parseFloat(operand1.innerText);
+        const value2 = parseFloat(operand2.innerText);
+        let outcome;
+        if (operator.innerText === "+") {
+          outcome = value1 + value2;
+        } else if (operator.innerText === "-") {
+          outcome = value1 - value2;
+        } else if (operator.innerText === "/") {
+          outcome = value1 / value2;
+        } else if (operator.innerText === "*") {
+          outcome = value1 * value2;
+        } else if (operator.innerText === "^") {
+          outcome = value1 ** value2;
+        }
+        result.innerText = outcome;
+      });
+
+      const clearDisplay = document.querySelector(".clearDisplay");
+      clearDisplay.addEventListener("click", () => {
+        operand1.innerText = "";
+        operator.innerText = "";
+        operand2.innerText = "";
+        result.innerText = "";
+      });
+    </script>
+  </body>
+</html>
